@@ -1,0 +1,66 @@
+.wrapper {
+   margin: 0 auto;
+}
+
+.label {
+   margin: 0 auto;
+   max-width: 500px;
+   display: flex;
+   padding-top: 20px;
+   justify-content: center;
+}
+
+.label input {
+   width: 250px;
+}
+
+.label button {
+   cursor: pointer;
+}
+
+.list {
+   list-style: none;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.list li {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   min-width: 200px;
+   margin-top: 10px;
+   border: 1px solid black;
+   border-radius: 4px;
+}
+
+.list li:first-child {
+   margin-top: 0;
+}
+
+.list button {
+   cursor: pointer;
+}
+
+input + a {
+   text-decoration: none;
+   color: #000000;
+}
+
+input:checked + a span {
+   text-decoration: line-through;
+}
+
+.buttonWrapper button {
+   display: inline-block;
+   min-width: 80px;
+   padding: 5px;
+   cursor: pointer;
+}
+
+.buttonWrapper span {
+   margin-left: 10px;
+   font-size: 16px;
+}

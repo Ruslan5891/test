@@ -1,0 +1,11 @@
+.wrapper {
+   display: flex;
+   justify-content: start;
+   align-items: center;
+}
+
+.link{
+   text-decoration: none;
+   margin-left: 20px;
+   font-size: 25px;
+}
