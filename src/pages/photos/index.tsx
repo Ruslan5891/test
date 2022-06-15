@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import { getPhotos } from "../../store/PhotosSlice/AsyncThunks";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-import { selectPhotos, selectIndex } from "../../store/PhotosSlice/selectors";
-import { setCurrentIndex } from "../../store/PhotosSlice/PhotosSlice";
+import { getImages } from "../../redux/actions/actionCreator";
+import { GET_PHOTOS } from "../../redux/constants";
 import { DESCRIPTION } from "./constants";
 import { Event } from "../todos/types";
 import { PhotoArr } from "./types";
@@ -12,13 +11,15 @@ import styles from "./styles.module.css";
 
 export const Photos = () => {
    const dispatch = useAppDispatch();
+   const photosFromStore = useAppSelector((state) => state?.photos);
    const [value, setValue] = useState("");
    const [isButtonActive, setIsButtonActive] = useState(false);
-   const currentIndex = useAppSelector(selectIndex);
-   const photos: PhotoArr = useAppSelector(selectPhotos);
+   const [photos, setPhotos] = useState<PhotoArr>([]);
+   const [error, setError] = useState(null);
 
    const inputHandler = (e: Event) => {
-      if (e.target.value === currentIndex) {
+      const { index } = photosFromStore;
+      if (e.target.value === index) {
          setIsButtonActive(true);
          setValue(e.target.value);
       } else {
@@ -32,11 +33,22 @@ export const Photos = () => {
       if (!isNumber) return;
       const inRange = isNumber >= 1 && isNumber <= 100;
       if (!inRange) return;
-      dispatch(setCurrentIndex(id));
-      dispatch(getPhotos(id));
+      dispatch(getImages(GET_PHOTOS, id));
       setValue("");
    };
-   
+
+   useEffect(() => {
+      const { photos, error } = photosFromStore;
+      if (error) {
+         setError(error);
+         return;
+      }
+      if (!photos) return;
+      else {
+         setPhotos(photos);
+      }
+   }, [photosFromStore]);
+
    return (
       <div>
          <Box sx={{ flexGrow: 1 }}>
@@ -65,6 +77,7 @@ export const Photos = () => {
                   {DESCRIPTION.BUTTON_TEXT}
                </button>
             </label>
+            {error ? (<h1>{error}</h1>) : null}
             <ul className={styles.list}>
                {photos &&
                   photos.map((photo) => (
